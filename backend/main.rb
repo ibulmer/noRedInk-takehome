@@ -69,6 +69,12 @@ def randomElm(arr)
   #expand on this to weight questions not seen and questions not answered more heavily
 end
 
+#function to sort a standard by question difficulty from most (1) difficult to least(0)
+def sortByDifficulty(arr, index)
+  return arr.sort {|a,b| b[index].to_f <=> a[index].to_f}
+end
+
+
 results = []
 
 # group our data into strands
@@ -93,10 +99,16 @@ for i in 0..number.length-1
   #go through every standard
   for j in 0..currentStrand.length-1
     currentStandard = currentStrand[j]
+    questionStandard = []
     #ask questions to each standard
     for k in 1..currentStandard
       asked = randomElm(questions[i][j])
-      results.push(asked[4])
+      questionStandard.push(asked)
+    end
+    sortedStandard = sortByDifficulty(questionStandard, 5)
+    # push each question in the sorted standard into the finalList
+    for l in 0..sortedStandard.length-1
+      results.push(sortedStandard[l][4])
     end
   end
 end
