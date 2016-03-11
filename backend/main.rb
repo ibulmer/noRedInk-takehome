@@ -70,9 +70,35 @@ def randomElm(arr)
 end
 
 results = []
-#naive solution. Loop through number of questions choosing random question and adding it to our results array.
 
-for i in 1..number
-  results.push randomElm(questions)[4]
+# group our data into strands
+questions = groupByProp(questions, 0)
+
+#group our questions further by standards
+for i in 0..questions.length-1
+  questions[i] = groupByProp(questions[i], 2)
 end
+
+
+#divide number of questions asked between the strands
+number = equalSizeGroups(number, questions.length)
+#divide number of questions asked in each strand between the standards
+for i in 0..number.length-1
+  number[i] = equalSizeGroups(number[i], questions[i].length)
+end
+
+#go through every strand
+for i in 0..number.length-1
+  currentStrand = number[i]
+  #go through every standard
+  for j in 0..currentStrand.length-1
+    currentStandard = currentStrand[j]
+    #ask questions to each standard
+    for k in 1..currentStandard
+      asked = randomElm(questions[i][j])
+      results.push(asked[4])
+    end
+  end
+end
+
 puts results
